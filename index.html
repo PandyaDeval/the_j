@@ -1,0 +1,27 @@
+<html>
+<head>
+<style>
+body{
+background-color:green;
+}
+#can{
+position:absolute;top:10%;left:10%;border:2px solid;
+}
+#canvasimg{
+position:absolute;top:10%;left:52%;display:none;
+}
+#save{
+position:absolute;top:70%;left:10%;
+}
+#clr{
+position:absolute;top:70%;left:15%;
+}
+</style>
+</head>
+<body onload="init()">
+<canvas id="can" width="400" height="400"></canvas>
+<img id="canvasimg">
+<input type="button" value="save" id="save" size="30" onclick="save()">
+<input type="button" value="clear" id="clr" size="30" onclick="erase()">
+</body>
+</html>
