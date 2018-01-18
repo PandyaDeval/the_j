@@ -16,7 +16,22 @@ position:absolute;top:70%;left:10%;
 #clr{
 position:absolute;top:70%;left:15%;
 }
+@media screen and (max-width:369px){
+body{
+background-color:red;
+}
+}
 </style>
+<script text="text/javascript">
+var canvas,ctx,flag=false,dot_flag=false,prevX=0,currX=0,prevY=0,currY=0,x="black",y=0;
+
+function init(){
+	canvas=document.getElementById("can");
+	ctx=canvas.getContext("2d");
+	w=canvas.width;
+	h=canvas.height;
+}
+</script>
 </head>
 <body onload="init()">
 <canvas id="can" width="400" height="400"></canvas>
