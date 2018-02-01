@@ -2,8 +2,9 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
+
 #can{
-position:absolute;top:10%;left:10%;border:2px solid;width:400;height:400;
+position:absolute;top:10%;left:10%;border:2px solid;
 }
 #canvasimg{
 position:absolute;top:10%;left:52%;display:none;
@@ -41,6 +42,8 @@ body{
 		{
 			alert('PHONE...'+window.devicePixelRatio);
         canvas = document.getElementById('can');
+		canvas.width=200;
+		canvas.height=400;
         ctx = canvas.getContext("2d");
         w = canvas.width;
         h = canvas.height;
@@ -62,6 +65,8 @@ body{
 		{
 			alert("PC..."+window.devicePixelRatio);
         canvas = document.getElementById('can');
+		canvas.width=400;
+		canvas.height=400;
         ctx = canvas.getContext("2d");
         w = canvas.width;
         h = canvas.height;
@@ -112,8 +117,8 @@ body{
             prevY = currY;
 			if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 			{
-            currX = e.pageX - canvas.offsetLeft;
-            currY = e.pageY - canvas.offsetTop;
+            currX = e.targetTouches[0].pageX - canvas.offsetLeft;
+            currY = e.targetTouches[0].pageY - canvas.offsetTop;
 				//alert("X: "+currX+"   Y: "+currY);
 			}
 			else
@@ -143,8 +148,8 @@ body{
 				
 				if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 			{
-            currX = e.pageX - canvas.offsetLeft;
-            currY = e.pageY - canvas.offsetTop;
+            currX = e.targetTouches[0].pageX - canvas.offsetLeft;
+            currY = e.targetTouches[0].pageY - canvas.offsetTop;
 				//alert("X: "+currX+"   Y: "+currY);
 			}
 			else
@@ -160,7 +165,7 @@ body{
 	
     </script>
     <body onload="init()">
-        <canvas id="can"></canvas>
+        <div><canvas id="can"></canvas></div>
         <img id="canvasimg" >
         <input type="button" value="save" id="btn" size="30" onclick="save()" >
         <input type="button" value="clear" id="clr" size="23" onclick="erase()" >
