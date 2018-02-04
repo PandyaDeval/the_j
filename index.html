@@ -2,25 +2,46 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
+#imgfile{
+position:absolute;top:60%;left:80%;
+}
 #can{
-position:absolute;top:10%;left:10%;border:2px solid;width:400;height:400;
+position:absolute;top:20%;left:30%;border:2px solid;
 }
 #canvasimg{
-position:absolute;top:10%;left:52%;display:none;
+position:absolute;top:105%;left:30%;bottom:5%;display:none;
 }
 #btn{
-position:absolute;top:70%;left:10%;
+position:absolute;top:50%;left:80%;
 }
 #clr{
-position:absolute;top:70%;left:15%;
+position:absolute;top:50%;left:85%;
 }
 body{
-	background-color:green;
+	
 	}
-@media handheld{
-body{
-	background-color:yellow;
-	}
+h1{
+text-align:center;font-family:'pristina regular';font-size:100px;
+}
+@media only screen and (max-device-width: 360px){
+	#can{
+position:absolute;top:20%;left:10%;border:2px solid;
+}
+#canvasimg{
+position:absolute;top:100%;left:10%;display:none;
+}
+#btn{
+position:absolute;top:90%;left:10%;
+}
+#clr{
+position:absolute;top:90%;left:25%;
+}
+h1{
+text-align:center;font-family:'pristina regular';font-size:250%;
+}
+#imgfile{
+position:absolute;top:80%;left:10%;
+}
 }
 
 </style>
@@ -31,7 +52,8 @@ body{
         currX = 0,
         prevY = 0,
         currY = 0,
-        dot_flag = false;
+        dot_flag = false,
+		imgsave;
 
     var x = "black",
         y = 2;
@@ -41,6 +63,8 @@ body{
 		{
 			alert('PHONE...'+window.devicePixelRatio);
         canvas = document.getElementById('can');
+		canvas.width=300;
+		canvas.height=300;
         ctx = canvas.getContext("2d");
         w = canvas.width;
         h = canvas.height;
@@ -62,6 +86,8 @@ body{
 		{
 			alert("PC..."+window.devicePixelRatio);
         canvas = document.getElementById('can');
+		canvas.width=600;
+		canvas.height=500;
         ctx = canvas.getContext("2d");
         w = canvas.width;
         h = canvas.height;
@@ -96,14 +122,47 @@ body{
         if (m) {
             ctx.clearRect(0, 0, w, h);
             document.getElementById("canvasimg").style.display = "none";
+			document.getElementById("imgfile").value="";
         }
     }
     
     function save() {
-        document.getElementById("canvasimg").style.border = "2px solid";
-        var dataURL = canvas.toDataURL();
-        document.getElementById("canvasimg").src = dataURL;
-        document.getElementById("canvasimg").style.display = "inline";
+		if(document.getElementById('imgfile').files.length==0)
+		{
+			alert('Image not Detected.');
+			document.getElementById("canvasimg").style.border = "2px solid";
+			var dataURL = canvas.toDataURL();
+			document.getElementById("canvasimg").src = dataURL;
+			document.getElementById("canvasimg").style.display = "inline";
+		}
+		else
+		{
+			alert('Image detected.');
+			var x=document.getElementById('imgfile');
+			var fReader = new FileReader();
+		fReader.readAsDataURL(x.files[0]);
+		fReader.onloadend = function(event)
+		{
+			var img = document.getElementById("canvasimg");
+			img.src = event.target.result;
+			img.style.display="inline";
+			if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+			{
+				img.width=300;
+				img.height=300;
+			}
+			else 
+			{
+				img.width=600;
+				img.height=500;
+			}
+		}
+			/*var y=x.value;
+			document.getElementById('canvasimg').src=y;
+			document.getElementById('canvasimg').style.display="inline";*/
+		}
+		
+        
     }
     
     function findxy(res, e) {
@@ -112,8 +171,8 @@ body{
             prevY = currY;
 			if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 			{
-            currX = e.pageX - canvas.offsetLeft;
-            currY = e.pageY - canvas.offsetTop;
+            currX = e.targetTouches[0].pageX - canvas.offsetLeft;
+            currY = e.targetTouches[0].pageY - canvas.offsetTop;
 				//alert("X: "+currX+"   Y: "+currY);
 			}
 			else
@@ -143,8 +202,8 @@ body{
 				
 				if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 			{
-            currX = e.pageX - canvas.offsetLeft;
-            currY = e.pageY - canvas.offsetTop;
+            currX = e.targetTouches[0].pageX - canvas.offsetLeft;
+            currY = e.targetTouches[0].pageY - canvas.offsetTop;
 				//alert("X: "+currX+"   Y: "+currY);
 			}
 			else
@@ -160,9 +219,11 @@ body{
 	
     </script>
     <body onload="init()">
+		<h1>Handwriting Recognition</h1>
         <canvas id="can"></canvas>
-        <img id="canvasimg" >
-        <input type="button" value="save" id="btn" size="30" onclick="save()" >
-        <input type="button" value="clear" id="clr" size="23" onclick="erase()" >
+		<input type="file" id="imgfile" accept="image/*"></input>
+        <input type="button" value="save" id="btn" onclick="save()" >
+        <input type="button" value="clear" id="clr" onclick="erase()" ><br><br>
+		<img id="canvasimg" >
     </body>
     </html>
