@@ -2,8 +2,14 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
+#select_image{
+position:absolute;top:60%;left:80%;z-index:5;background-color:black;width:8em;height:1.5em;color:rgb(254,241,201);font-weight:bold;text-align:center;padding-top:0.3em;
+}
 #imgfile{
-position:absolute;top:60%;left:80%;
+position:absolute;height:100%;width:100%;z-index:1000;top:0px;left:0px;opacity:0;
+}
+#file_name{
+position:absolute;top:64%;left:80%;font-weight:bold;
 }
 #can{
 position:absolute;top:20%;left:30%;border:2px solid;
@@ -12,14 +18,14 @@ position:absolute;top:20%;left:30%;border:2px solid;
 position:absolute;top:105%;left:30%;bottom:5%;display:none;
 }
 #btn{
-position:absolute;top:50%;left:80%;
+position:absolute;top:50%;left:80%;width:5em;height:2em;font-weight:bold;background-color:black;border:none;color:rgb(254,241,201);
 }
 #clr{
-position:absolute;top:50%;left:85%;
+position:absolute;top:50%;left:85%;width:5em;height:2em;font-weight:bold;background-color:black;border:none;color:rgb(254,241,201);
 }
 body{
-	
-	}
+background-image:url('image2.png');background-size:100% 100%;
+}
 h1{
 text-align:center;font-family:'pristina regular';font-size:100px;
 }
@@ -31,16 +37,29 @@ position:absolute;top:20%;left:10%;border:2px solid;
 position:absolute;top:100%;left:10%;display:none;
 }
 #btn{
-position:absolute;top:90%;left:10%;
+position:absolute;top:90%;left:10%;width:5em;height:2em;font-weight:bold;background-color:black;border:none;color:rgb(254,241,201);
 }
 #clr{
-position:absolute;top:90%;left:25%;
+position:absolute;top:90%;left:35%;width:5em;height:2em;font-weight:bold;background-color:black;border:none;color:rgb(254,241,201);
 }
 h1{
-text-align:center;font-family:'pristina regular';font-size:250%;
+@font-face{
+font-family:myfont;
+src:url(https://www.dafontfree.net/download-pristina-f65227.htm);
+}
+text-align:center;font-family:'myfont';font-size:250%;
+}
+#select_image{
+position:absolute;top:80%;left:10%;z-index:5;background-color:black;width:8em;height:1.5em;color:rgb(254,241,201);font-weight:bold;text-align:center;padding-top:0.3em;
+}
+#file_name{
+position:absolute;top:80%;left:46%;font-weight:bold;
 }
 #imgfile{
-position:absolute;top:80%;left:10%;
+position:absolute;height:100%;width:100%;z-index:1000;top:0px;left:0px;opacity:0;
+}
+body{
+background-image:url('image2.png');background-size:100% 100%;
 }
 }
 
@@ -61,7 +80,7 @@ position:absolute;top:80%;left:10%;
     function init() {
 		if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
 		{
-			alert('PHONE...'+window.devicePixelRatio);
+			//alert('PHONE...'+window.devicePixelRatio);
         canvas = document.getElementById('can');
 		canvas.width=300;
 		canvas.height=300;
@@ -84,7 +103,7 @@ position:absolute;top:80%;left:10%;
 		}
 		else
 		{
-			alert("PC..."+window.devicePixelRatio);
+			//alert("PC..."+window.devicePixelRatio);
         canvas = document.getElementById('can');
 		canvas.width=600;
 		canvas.height=500;
@@ -123,13 +142,14 @@ position:absolute;top:80%;left:10%;
             ctx.clearRect(0, 0, w, h);
             document.getElementById("canvasimg").style.display = "none";
 			document.getElementById("imgfile").value="";
+			document.getElementById("file_name").innerHTML="";
         }
     }
     
     function save() {
 		if(document.getElementById('imgfile').files.length==0)
 		{
-			alert('Image not Detected.');
+			//alert('Image not Detected.');
 			document.getElementById("canvasimg").style.border = "2px solid";
 			var dataURL = canvas.toDataURL();
 			document.getElementById("canvasimg").src = dataURL;
@@ -137,13 +157,14 @@ position:absolute;top:80%;left:10%;
 		}
 		else
 		{
-			alert('Image detected.');
+			//alert('Image detected.');
 			var x=document.getElementById('imgfile');
 			var fReader = new FileReader();
 		fReader.readAsDataURL(x.files[0]);
 		fReader.onloadend = function(event)
 		{
 			var img = document.getElementById("canvasimg");
+			//document.getElementById("file_name").innerHTML=x.files[0].name;
 			img.src = event.target.result;
 			img.style.display="inline";
 			if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
@@ -217,11 +238,17 @@ position:absolute;top:80%;left:10%;
         }
     }
 	
+	function filename(){
+		var x=document.getElementById("imgfile");
+		document.getElementById("file_name").innerHTML=x.files[0].name;
+	}
+	
     </script>
     <body onload="init()">
 		<h1>Handwriting Recognition</h1>
         <canvas id="can"></canvas>
-		<input type="file" id="imgfile" accept="image/*"></input>
+		<div id="select_image">Select Image<input type="file" onchange="filename()" id="imgfile" accept="image/*"/></div>
+		<div id="file_name"></div>
         <input type="button" value="save" id="btn" onclick="save()" >
         <input type="button" value="clear" id="clr" onclick="erase()" ><br><br>
 		<img id="canvasimg" >
